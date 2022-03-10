@@ -1,0 +1,1222 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" type="text/css" href="index.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <title>Diff-TTS</title>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-156162365-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'UA-156162365-1');
+    </script>
+</head>
+
+<body>
+
+    <!-- Title -->
+    <div class="container" style="max-width:1200px;">
+        <div class='row mt-5 mb-3'>
+            <div class='col text-center'>
+                <p class="h2 font-weight-normal">Diff-TTS: A Denoising Diffusion Model for Text-to-Speech</p>
+            </div>
+        </div>
+    </div>
+    <div class="container" style="max-width:1100px;">
+        <!-- authors -->
+        <div class='row text-center h5 font-weight-normal pl-0 pr-0 mb-4' style="font-style:italic">
+                <a class="col-md-2 col-xs-4 text-dark" style="margin:auto"><span>Myeonghun Jeong</span></a>
+                <a class="col-md-2 col-xs-4 text-dark" style="margin:auto"><span>Hyeongju Kim</span></a>
+                <a class="col-md-2 col-xs-4 text-dark" style="margin:auto"><span>Sung Jun Cheon</span></a>
+                <a class="col-md-2 col-xs-4 text-dark" style="margin:auto"><span>Byoung Jin Choi</span></a>
+                <a class="col-md-2 col-xs-4 text-dark" style="margin:auto"><span>Nam Soo Kim</span></a>
+            </div>
+        <!-- <div class='row text-center h5 font-weight-normal pl-1 pr-1 mb-1'>
+            <a class="col-md-12 col-xs-12 text-dark"><span>Anonymous Authors</span></a>
+        </div> -->
+
+        <!-- affiliations -->
+
+        <!-- <div class='row text-center h5 font-weight-light pl-4 pr-4 mb-4' style="font-style:italic">
+                <span class="col-md-12 col-xs-12 text-dark">Affiliation 1</span>
+            </div> -->
+
+        <!-- picture or gif below the author -->
+        <!-- <div class='row justify-content-center'  style="position: relative; width: 100%;height: 0;padding-bottom: 33%; margin:0">
+                <img 
+                    class="img-fluid rounded mx-auto d-block" 
+                    src="./assets/test1.gif" alt="test1.gif" 
+                    style="position:absolute; width:100%; height:100%; top:0px; left:0px;" 
+                    srcset="./assets/test1.gif "
+                    sizes="(min-width: 768px) 1536px, 100vw"
+                >
+			</div> -->
+
+        <!-- Paper section -->
+        <div class='row text-center'>
+            <!-- thumbnail of paper on left side of abstract -->
+            <div class="col" style="margin-top:20px">
+                <a class="h5" href="https://arxiv.org/abs/2104.01409" style="margin-left:10px">
+                    <span>[Paper]</span>
+                </a>
+            </div>
+        </div>
+        <div>
+            <hr>
+            <div class='col text-center'>
+                <p class='h2 font-weight-bold '>Abstract</p>
+
+                <div class="container" style="max-width:850px; margin-top: 20px; margin-bottom: 40px">
+                    <p style='line-height:1.3; font-size:large; text-align: justify'>
+                       Although neural text-to-speech (TTS) models have attracted a lot of attention and succeeded in generating human-like speech, there is still room for improvements to its naturalness and architectural efficiency. In this work, we propose a novel non-autoregressive TTS model, namely Diff-TTS, which achieves highly natural and efficient speech synthesis. Given the text, Diff-TTS exploits a denoising diffusion framework to transform the noise signal into a mel-spectrogram via diffusion time steps. In order to learn the mel-spectrogram distribution conditioned on the text, we present a likelihood-based optimization method for TTS. Furthermore, to boost up the inference speed, we leverage the accelerated sampling method that allows Diff-TTS to generate raw waveforms much faster without significantly degrading perceptual quality. Through experiments, we verified that Diff-TTS generates 28 times faster than the real-time with a single NVIDIA 2080Ti GPU.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Audio Samples -->
+        <div class='col'>
+            <hr>
+            <div class='row text-center'>
+                <div class='col'>
+                    <p class='h2 font-weight-bold '>Audio Examples</p>
+                </div>
+            </div>
+
+            <div class='row' style='margin-top: 40px; margin-bottom: 10px;'>
+                <p class='h4'>Example 1</p>
+            </div>
+
+
+            <div style='display: flex; align-content: center; '>
+                <div style='flex: 1;  '>
+                    <div class='row' style='width: 600px; height:50px; '>
+                        <p style='height: 60px; width: 150px; padding: 15px 0; text-align: center;'>Ground Truth</p>
+                        <div style='height: 60px; vertical-align: middle'>
+                            <audio controls controlsList="nodownload"
+                                style='display: inline-block; padding:8px; width: 270px; height: 50px; width: 270px; height: 50px'>
+                                <source src="./assets/1/a.wav" class="img-fluid rounded mx-auto d-block" alt="temp">
+                            </audio>
+                        </div>
+                    </div>
+                    <div class='row' style='width: 600px; height:50px; '>
+                        <div style='height: 60px;'>
+                            <p style='height: 60px; width: 150px; padding: 15px 0; text-align: center;'>Ground Truth(Mel + HiFiGAN)</p>
+                        </div>
+                        <div style='height: 60px; '>
+                            <audio controls controlsList="nodownload"
+                                style='display: inline-block; padding:8px; width: 270px; height: 50px '>
+                                <source src="./assets/2/a.wav" class="img-fluid rounded mx-auto d-block" alt="temp">
+                            </audio>
+                        </div>
+                    </div>
+                    <div class='row' style='width: 600px; height:50px; '>
+                        <div style='height: 60px;'>
+                            <p style='height: 60px; width: 150px; padding: 15px 0; text-align: center;'>Tacotron2</p>
+                        </div>
+                        <div style='height: 60px; '>
+                            <audio controls controlsList="nodownload"
+                                style='display: inline-block; padding:8px; width: 270px; height: 50px '>
+                                <source src="./assets/3/a.wav" class="img-fluid rounded mx-auto d-block" alt="temp">
+                            </audio>
+                        </div>
+                    </div>
+                    <div class='row' style='width: 600px; height:50px; '>
+                        <div style='height: 60px;'>
+                            <p style='height: 60px; width: 150px; padding: 15px 0; text-align: center;'>Glow-TTS</p>
+                        </div>
+                        <div style='height: 60px; '>
+                            <audio controls controlsList="nodownload"
+                                style='display: inline-block; padding:8px; width: 270px; height: 50px '>
+                                <source src="./assets/4/a.wav" class="img-fluid rounded mx-auto d-block" alt="temp">
+                            </audio>
+                        </div>
+                    </div>
+
+                </div>
+
+
+                <div style='flex: 1;'>
+                    <div class='row' style='width: 600px; height:50px; '>
+                        <div style='height: 60px;'>
+                            <p style='height: 60px; width: 150px; padding: 15px 0; text-align: center;'>Diff-TTS (T=400, &#947;=1)
+                            </p>
+                        </div>
+                        <div style='height: 60px; '>
+                            <audio controls controlsList="nodownload"
+                                style='display: inline-block; padding:8px; width: 270px; height: 50px '>
+                                <source src="./assets/5/a.wav" class="img-fluid rounded mx-auto d-block" alt="temp">
+                            </audio>
+                        </div>
+                    </div>
+                    <div class='row' style='width: 600px; height:50px; '>
+                        <div style='height: 60px;'>
+                            <p style='height: 60px; width: 150px; padding: 15px 0; text-align: center;'>Diff-TTS (T=400, &#947;=7)</p>
+                        </div>
+                        <div style='height: 60px; '>
+                            <audio controls controlsList="nodownload"
+                                style='display: inline-block; padding:8px; width: 270px; height: 50px '>
+                                <source src="./assets/6/a.wav" class="img-fluid rounded mx-auto d-block" alt="temp">
+                            </audio>
+                        </div>
+                    </div>
+                    <div class='row' style='width: 600px; height:50px; '>
+                        <div style='height: 60px;'>
+                            <p style='height: 60px; width: 150px; padding: 15px 0; text-align: center;'>Diff-TTS (T=400, &#947;=21)</p>
+                        </div>
+                        <div style='height: 60px; '>
+                            <audio controls controlsList="nodownload"
+                                style='display: inline-block; padding:8px; width: 270px; height: 50px '>
+                                <source src="./assets/7/a.wav" class="img-fluid rounded mx-auto d-block" alt="temp">
+                            </audio>
+                        </div>
+                    </div>
+                    <div class='row' style='width: 600px; height:50px; '>
+                        <div style='height: 60px;'>
+                            <p style='height: 60px; width: 150px; padding: 15px 0; text-align: center;'>Diff-TTS (T=400, &#947;=57)</p>
+                        </div>
+                        <div style='height: 60px; '>
+                            <audio controls controlsList="nodownload"
+                                style='display: inline-block; padding:8px; width: 270px; height: 50px '>
+                                <source src="./assets/8/a(x).wav" class="img-fluid rounded mx-auto d-block" alt="temp">
+                            </audio>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class='row' style='margin-top: 40px; margin-bottom: 10px;'>
+                <p class='h4'>Example 2</p>
+            </div>
+
+
+            <div style='display: flex; align-content: center; '>
+                <div style='flex: 1;  '>
+                    <div class='row' style='width: 600px; height:50px; '>
+                        <p style='height: 60px; width: 150px; padding: 15px 0; text-align: center;'>Ground Truth</p>
+                        <div style='height: 60px; vertical-align: middle'>
+                            <audio controls controlsList="nodownload"
+                                style='display: inline-block; padding:8px; width: 270px; height: 50px'>
+                                <source src="./assets/1/g.wav" class="img-fluid rounded mx-auto d-block" alt="temp">
+                            </audio>
+                        </div>
+                    </div>
+                    <div class='row' style='width: 600px; height:50px; '>
+                        <div style='height: 60px;'>
+                            <p style='height: 60px; width: 150px; padding: 15px 0; text-align: center;'>Ground Truth(Mel + HiFiGAN)</p>
+                        </div>
+                        <div style='height: 60px; '>
+                            <audio controls controlsList="nodownload"
+                                style='display: inline-block; padding:8px; width: 270px; height: 50px '>
+                                <source src="./assets/2/g.wav" class="img-fluid rounded mx-auto d-block" alt="temp">
+                            </audio>
+                        </div>
+                    </div>
+                    <div class='row' style='width: 600px; height:50px; '>
+                        <div style='height: 60px;'>
+                            <p style='height: 60px; width: 150px; padding: 15px 0; text-align: center;'>Tacotron2</p>
+                        </div>
+                        <div style='height: 60px; '>
+                            <audio controls controlsList="nodownload"
+                                style='display: inline-block; padding:8px; width: 270px; height: 50px '>
+                                <source src="./assets/3/g.wav" class="img-fluid rounded mx-auto d-block" alt="temp">
+                            </audio>
+                        </div>
+                    </div>
+                    <div class='row' style='width: 600px; height:50px; '>
+                        <div style='height: 60px;'>
+                            <p style='height: 60px; width: 150px; padding: 15px 0; text-align: center;'>Glow-TTS</p>
+                        </div>
+                        <div style='height: 60px; '>
+                            <audio controls controlsList="nodownload"
+                                style='display: inline-block; padding:8px; width: 270px; height: 50px '>
+                                <source src="./assets/4/g.wav" class="img-fluid rounded mx-auto d-block" alt="temp">
+                            </audio>
+                        </div>
+                    </div>
+
+                </div>
+
+
+                <div style='flex: 1;'>
+                    <div class='row' style='width: 600px; height:50px; '>
+                        <div style='height: 60px;'>
+                            <p style='height: 60px; width: 150px; padding: 15px 0; text-align: center;'>Diff-TTS (T=400, &#947;=1)
+                            </p>
+                        </div>
+                        <div style='height: 60px; '>
+                            <audio controls controlsList="nodownload"
+                                style='display: inline-block; padding:8px; width: 270px; height: 50px '>
+                                <source src="./assets/5/g.wav" class="img-fluid rounded mx-auto d-block" alt="temp">
+                            </audio>
+                        </div>
+                    </div>
+                    <div class='row' style='width: 600px; height:50px; '>
+                        <div style='height: 60px;'>
+                            <p style='height: 60px; width: 150px; padding: 15px 0; text-align: center;'>Diff-TTS (T=400, &#947;=7)</p>
+                        </div>
+                        <div style='height: 60px; '>
+                            <audio controls controlsList="nodownload"
+                                style='display: inline-block; padding:8px; width: 270px; height: 50px '>
+                                <source src="./assets/6/g.wav" class="img-fluid rounded mx-auto d-block" alt="temp">
+                            </audio>
+                        </div>
+                    </div>
+                    <div class='row' style='width: 600px; height:50px; '>
+                        <div style='height: 60px;'>
+                            <p style='height: 60px; width: 150px; padding: 15px 0; text-align: center;'>Diff-TTS (T=400, &#947;=21)
+                                </p>
+                        </div>
+                        <div style='height: 60px; '>
+                            <audio controls controlsList="nodownload"
+                                style='display: inline-block; padding:8px; width: 270px; height: 50px '>
+                                <source src="./assets/7/g.wav" class="img-fluid rounded mx-auto d-block" alt="temp">
+                            </audio>
+                        </div>
+                    </div>
+                    <div class='row' style='width: 600px; height:50px; '>
+                        <div style='height: 60px;'>
+                            <p style='height: 60px; width: 150px; padding: 15px 0; text-align: center;'>Diff-TTS (T=400, &#947;=57)</p>
+                        </div>
+                        <div style='height: 60px; '>
+                            <audio controls controlsList="nodownload"
+                                style='display: inline-block; padding:8px; width: 270px; height: 50px '>
+                                <source src="./assets/8/g.wav" class="img-fluid rounded mx-auto d-block" alt="temp">
+                            </audio>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class='row' style='margin-top: 40px; margin-bottom: 10px;'>
+                <p class='h4'>Example 3</p>
+            </div>
+
+
+            <div style='display: flex; align-content: center; '>
+                <div style='flex: 1;  '>
+                    <div class='row' style='width: 600px; height:50px; '>
+                        <p style='height: 60px; width: 150px; padding: 15px 0; text-align: center;'>Ground Truth</p>
+                        <div style='height: 60px; vertical-align: middle'>
+                            <audio controls controlsList="nodownload"
+                                style='display: inline-block; padding:8px; width: 270px; height: 50px'>
+                                <source src="./assets/1/c.wav" class="img-fluid rounded mx-auto d-block" alt="temp">
+                            </audio>
+                        </div>
+                    </div>
+                    <div class='row' style='width: 600px; height:50px; '>
+                        <div style='height: 60px;'>
+                            <p style='height: 60px; width: 150px; padding: 15px 0; text-align: center;'>Ground Truth(Mel + HiFiGAN)</p>
+                        </div>
+                        <div style='height: 60px; '>
+                            <audio controls controlsList="nodownload"
+                                style='display: inline-block; padding:8px; width: 270px; height: 50px '>
+                                <source src="./assets/2/c.wav" class="img-fluid rounded mx-auto d-block" alt="temp">
+                            </audio>
+                        </div>
+                    </div>
+                    <div class='row' style='width: 600px; height:50px; '>
+                        <div style='height: 60px;'>
+                            <p style='height: 60px; width: 150px; padding: 15px 0; text-align: center;'>Tacotron2</p>
+                        </div>
+                        <div style='height: 60px; '>
+                            <audio controls controlsList="nodownload"
+                                style='display: inline-block; padding:8px; width: 270px; height: 50px '>
+                                <source src="./assets/3/c.wav" class="img-fluid rounded mx-auto d-block" alt="temp">
+                            </audio>
+                        </div>
+                    </div>
+                    <div class='row' style='width: 600px; height:50px; '>
+                        <div style='height: 60px;'>
+                            <p style='height: 60px; width: 150px; padding: 15px 0; text-align: center;'>Glow-TTS</p>
+                        </div>
+                        <div style='height: 60px; '>
+                            <audio controls controlsList="nodownload"
+                                style='display: inline-block; padding:8px; width: 270px; height: 50px '>
+                                <source src="./assets/4/c.wav" class="img-fluid rounded mx-auto d-block" alt="temp">
+                            </audio>
+                        </div>
+                    </div>
+
+                </div>
+
+
+                <div style='flex: 1;'>
+                    <div class='row' style='width: 600px; height:50px; '>
+                        <div style='height: 60px;'>
+                            <p style='height: 60px; width: 150px; padding: 15px 0; text-align: center;'>Diff-TTS (T=400, &#947;=1)
+                            </p>
+                        </div>
+                        <div style='height: 60px; '>
+                            <audio controls controlsList="nodownload"
+                                style='display: inline-block; padding:8px; width: 270px; height: 50px '>
+                                <source src="./assets/5/c.wav" class="img-fluid rounded mx-auto d-block" alt="temp">
+                            </audio>
+                        </div>
+                    </div>
+                    <div class='row' style='width: 600px; height:50px; '>
+                        <div style='height: 60px;'>
+                            <p style='height: 60px; width: 150px; padding: 15px 0; text-align: center;'>Diff-TTS (T=400, &#947;=7)</p>
+                        </div>
+                        <div style='height: 60px; '>
+                            <audio controls controlsList="nodownload"
+                                style='display: inline-block; padding:8px; width: 270px; height: 50px '>
+                                <source src="./assets/6/c.wav" class="img-fluid rounded mx-auto d-block" alt="temp">
+                            </audio>
+                        </div>
+                    </div>
+                    <div class='row' style='width: 600px; height:50px; '>
+                        <div style='height: 60px;'>
+                            <p style='height: 60px; width: 150px; padding: 15px 0; text-align: center;'>Diff-TTS (T=400, &#947;=21)
+                                </p>
+                        </div>
+                        <div style='height: 60px; '>
+                            <audio controls controlsList="nodownload"
+                                style='display: inline-block; padding:8px; width: 270px; height: 50px '>
+                                <source src="./assets/7/c.wav" class="img-fluid rounded mx-auto d-block" alt="temp">
+                            </audio>
+                        </div>
+                    </div>
+                    <div class='row' style='width: 600px; height:50px; '>
+                        <div style='height: 60px;'>
+                            <p style='height: 60px; width: 150px; padding: 15px 0; text-align: center;'>Diff-TTS (T=400, &#947;=57)</p>
+                        </div>
+                        <div style='height: 60px; '>
+                            <audio controls controlsList="nodownload"
+                                style='display: inline-block; padding:8px; width: 270px; height: 50px '>
+                                <source src="./assets/8/c.wav" class="img-fluid rounded mx-auto d-block" alt="temp">
+                            </audio>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class='row' style='margin-top: 40px; margin-bottom: 10px;'>
+                <p class='h4'>Example 4</p>
+            </div>
+
+
+            <div style='display: flex; align-content: center; '>
+                <div style='flex: 1;  '>
+                    <div class='row' style='width: 600px; height:50px; '>
+                        <p style='height: 60px; width: 150px; padding: 15px 0; text-align: center;'>Ground Truth</p>
+                        <div style='height: 60px; vertical-align: middle'>
+                            <audio controls controlsList="nodownload"
+                                style='display: inline-block; padding:8px; width: 270px; height: 50px'>
+                                <source src="./assets/1/d.wav" class="img-fluid rounded mx-auto d-block" alt="temp">
+                            </audio>
+                        </div>
+                    </div>
+                    <div class='row' style='width: 600px; height:50px; '>
+                        <div style='height: 60px;'>
+                            <p style='height: 60px; width: 150px; padding: 15px 0; text-align: center;'>Ground Truth(Mel + HiFiGAN)</p>
+                        </div>
+                        <div style='height: 60px; '>
+                            <audio controls controlsList="nodownload"
+                                style='display: inline-block; padding:8px; width: 270px; height: 50px '>
+                                <source src="./assets/2/d.wav" class="img-fluid rounded mx-auto d-block" alt="temp">
+                            </audio>
+                        </div>
+                    </div>
+                    <div class='row' style='width: 600px; height:50px; '>
+                        <div style='height: 60px;'>
+                            <p style='height: 60px; width: 150px; padding: 15px 0; text-align: center;'>Tacotron2</p>
+                        </div>
+                        <div style='height: 60px; '>
+                            <audio controls controlsList="nodownload"
+                                style='display: inline-block; padding:8px; width: 270px; height: 50px '>
+                                <source src="./assets/3/d.wav" class="img-fluid rounded mx-auto d-block" alt="temp">
+                            </audio>
+                        </div>
+                    </div>
+                    <div class='row' style='width: 600px; height:50px; '>
+                        <div style='height: 60px;'>
+                            <p style='height: 60px; width: 150px; padding: 15px 0; text-align: center;'>Glow-TTS</p>
+                        </div>
+                        <div style='height: 60px; '>
+                            <audio controls controlsList="nodownload"
+                                style='display: inline-block; padding:8px; width: 270px; height: 50px '>
+                                <source src="./assets/4/d.wav" class="img-fluid rounded mx-auto d-block" alt="temp">
+                            </audio>
+                        </div>
+                    </div>
+
+                </div>
+
+
+                <div style='flex: 1;'>
+                    <div class='row' style='width: 600px; height:50px; '>
+                        <div style='height: 60px;'>
+                            <p style='height: 60px; width: 150px; padding: 15px 0; text-align: center;'>Diff-TTS (T=400, &#947;=1)
+                            </p>
+                        </div>
+                        <div style='height: 60px; '>
+                            <audio controls controlsList="nodownload"
+                                style='display: inline-block; padding:8px; width: 270px; height: 50px '>
+                                <source src="./assets/5/d.wav" class="img-fluid rounded mx-auto d-block" alt="temp">
+                            </audio>
+                        </div>
+                    </div>
+                    <div class='row' style='width: 600px; height:50px; '>
+                        <div style='height: 60px;'>
+                            <p style='height: 60px; width: 150px; padding: 15px 0; text-align: center;'>Diff-TTS (T=400, &#947;=7)</p>
+                        </div>
+                        <div style='height: 60px; '>
+                            <audio controls controlsList="nodownload"
+                                style='display: inline-block; padding:8px; width: 270px; height: 50px '>
+                                <source src="./assets/6/d.wav" class="img-fluid rounded mx-auto d-block" alt="temp">
+                            </audio>
+                        </div>
+                    </div>
+                    <div class='row' style='width: 600px; height:50px; '>
+                        <div style='height: 60px;'>
+                            <p style='height: 60px; width: 150px; padding: 15px 0; text-align: center;'>Diff-TTS (T=400, &#947;=21)</p>
+                        </div>
+                        <div style='height: 60px; '>
+                            <audio controls controlsList="nodownload"
+                                style='display: inline-block; padding:8px; width: 270px; height: 50px '>
+                                <source src="./assets/7/d.wav" class="img-fluid rounded mx-auto d-block" alt="temp">
+                            </audio>
+                        </div>
+                    </div>
+                    <div class='row' style='width: 600px; height:50px; '>
+                        <div style='height: 60px;'>
+                            <p style='height: 60px; width: 150px; padding: 15px 0; text-align: center;'>Diff-TTS (T=400, &#947;=57)</p>
+                        </div>
+                        <div style='height: 60px; '>
+                            <audio controls controlsList="nodownload"
+                                style='display: inline-block; padding:8px; width: 270px; height: 50px '>
+                                <source src="./assets/8/d.wav" class="img-fluid rounded mx-auto d-block" alt="temp">
+                            </audio>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class='row' style='margin-top: 40px; margin-bottom: 10px;'>
+                <p class='h4'>Example 5</p>
+            </div>
+
+
+            <div style='display: flex; align-content: center; '>
+                <div style='flex: 1;  '>
+                    <div class='row' style='width: 600px; height:50px; '>
+                        <p style='height: 60px; width: 150px; padding: 15px 0; text-align: center;'>Ground Truth</p>
+                        <div style='height: 60px; vertical-align: middle'>
+                            <audio controls controlsList="nodownload"
+                                style='display: inline-block; padding:8px; width: 270px; height: 50px'>
+                                <source src="./assets/1/e.wav" class="img-fluid rounded mx-auto d-block" alt="temp">
+                            </audio>
+                        </div>
+                    </div>
+                    <div class='row' style='width: 600px; height:50px; '>
+                        <div style='height: 60px;'>
+                            <p style='height: 60px; width: 150px; padding: 15px 0; text-align: center;'>Ground Truth(Mel + HiFiGAN)</p>
+                        </div>
+                        <div style='height: 60px; '>
+                            <audio controls controlsList="nodownload"
+                                style='display: inline-block; padding:8px; width: 270px; height: 50px '>
+                                <source src="./assets/2/e.wav" class="img-fluid rounded mx-auto d-block" alt="temp">
+                            </audio>
+                        </div>
+                    </div>
+                    <div class='row' style='width: 600px; height:50px; '>
+                        <div style='height: 60px;'>
+                            <p style='height: 60px; width: 150px; padding: 15px 0; text-align: center;'>Tacotron2</p>
+                        </div>
+                        <div style='height: 60px; '>
+                            <audio controls controlsList="nodownload"
+                                style='display: inline-block; padding:8px; width: 270px; height: 50px '>
+                                <source src="./assets/3/e.wav" class="img-fluid rounded mx-auto d-block" alt="temp">
+                            </audio>
+                        </div>
+                    </div>
+                    <div class='row' style='width: 600px; height:50px; '>
+                        <div style='height: 60px;'>
+                            <p style='height: 60px; width: 150px; padding: 15px 0; text-align: center;'>Glow-TTS</p>
+                        </div>
+                        <div style='height: 60px; '>
+                            <audio controls controlsList="nodownload"
+                                style='display: inline-block; padding:8px; width: 270px; height: 50px '>
+                                <source src="./assets/4/e.wav" class="img-fluid rounded mx-auto d-block" alt="temp">
+                            </audio>
+                        </div>
+                    </div>
+
+                </div>
+
+
+                <div style='flex: 1;'>
+                    <div class='row' style='width: 600px; height:50px; '>
+                        <div style='height: 60px;'>
+                            <p style='height: 60px; width: 150px; padding: 15px 0; text-align: center;'>Diff-TTS (T=400, &#947;=1)
+                            </p>
+                        </div>
+                        <div style='height: 60px; '>
+                            <audio controls controlsList="nodownload"
+                                style='display: inline-block; padding:8px; width: 270px; height: 50px '>
+                                <source src="./assets/5/e.wav" class="img-fluid rounded mx-auto d-block" alt="temp">
+                            </audio>
+                        </div>
+                    </div>
+                    <div class='row' style='width: 600px; height:50px; '>
+                        <div style='height: 60px;'>
+                            <p style='height: 60px; width: 150px; padding: 15px 0; text-align: center;'>Diff-TTS (T=400, &#947;=7)</p>
+                        </div>
+                        <div style='height: 60px; '>
+                            <audio controls controlsList="nodownload"
+                                style='display: inline-block; padding:8px; width: 270px; height: 50px '>
+                                <source src="./assets/6/e.wav" class="img-fluid rounded mx-auto d-block" alt="temp">
+                            </audio>
+                        </div>
+                    </div>
+                    <div class='row' style='width: 600px; height:50px; '>
+                        <div style='height: 60px;'>
+                            <p style='height: 60px; width: 150px; padding: 15px 0; text-align: center;'>Diff-TTS (T=400, &#947;=21)</p>
+                        </div>
+                        <div style='height: 60px; '>
+                            <audio controls controlsList="nodownload"
+                                style='display: inline-block; padding:8px; width: 270px; height: 50px '>
+                                <source src="./assets/7/e.wav" class="img-fluid rounded mx-auto d-block" alt="temp">
+                            </audio>
+                        </div>
+                    </div>
+                    <div class='row' style='width: 600px; height:50px; '>
+                        <div style='height: 60px;'>
+                            <p style='height: 60px; width: 150px; padding: 15px 0; text-align: center;'>Diff-TTS (T=400, &#947;=57)</p>
+                        </div>
+                        <div style='height: 60px; '>
+                            <audio controls controlsList="nodownload"
+                                style='display: inline-block; padding:8px; width: 270px; height: 50px '>
+                                <source src="./assets/8/e.wav" class="img-fluid rounded mx-auto d-block" alt="temp">
+                            </audio>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class='row' style='margin-top: 40px; margin-bottom: 10px;'>
+                <p class='h4'>Example 6</p>
+            </div>
+            <div style='display: flex; align-content: center; '>
+                <div style='flex: 1;  '>
+                    <div class='row' style='width: 600px; height:50px; '>
+                        <p style='height: 60px; width: 150px; padding: 15px 0; text-align: center;'>Ground Truth</p>
+                        <div style='height: 60px; vertical-align: middle'>
+                            <audio controls controlsList="nodownload"
+                                style='display: inline-block; padding:8px; width: 270px; height: 50px'>
+                                <source src="./assets/1/f.wav" class="img-fluid rounded mx-auto d-block" alt="temp">
+                            </audio>
+                        </div>
+                    </div>
+                    <div class='row' style='width: 600px; height:50px; '>
+                        <div style='height: 60px;'>
+                            <p style='height: 60px; width: 150px; padding: 15px 0; text-align: center;'>Ground Truth(Mel + HiFiGAN)</p>
+                        </div>
+                        <div style='height: 60px; '>
+                            <audio controls controlsList="nodownload"
+                                style='display: inline-block; padding:8px; width: 270px; height: 50px '>
+                                <source src="./assets/2/f.wav" class="img-fluid rounded mx-auto d-block" alt="temp">
+                            </audio>
+                        </div>
+                    </div>
+                    <div class='row' style='width: 600px; height:50px; '>
+                        <div style='height: 60px;'>
+                            <p style='height: 60px; width: 150px; padding: 15px 0; text-align: center;'>Tacotron2</p>
+                        </div>
+                        <div style='height: 60px; '>
+                            <audio controls controlsList="nodownload"
+                                style='display: inline-block; padding:8px; width: 270px; height: 50px '>
+                                <source src="./assets/3/f.wav" class="img-fluid rounded mx-auto d-block" alt="temp">
+                            </audio>
+                        </div>
+                    </div>
+                    <div class='row' style='width: 600px; height:50px; '>
+                        <div style='height: 60px;'>
+                            <p style='height: 60px; width: 150px; padding: 15px 0; text-align: center;'>Glow-TTS</p>
+                        </div>
+                        <div style='height: 60px; '>
+                            <audio controls controlsList="nodownload"
+                                style='display: inline-block; padding:8px; width: 270px; height: 50px '>
+                                <source src="./assets/4/f.wav" class="img-fluid rounded mx-auto d-block" alt="temp">
+                            </audio>
+                        </div>
+                    </div>
+
+                </div>
+
+
+                <div style='flex: 1;'>
+                    <div class='row' style='width: 600px; height:50px; '>
+                        <div style='height: 60px;'>
+                            <p style='height: 60px; width: 150px; padding: 15px 0; text-align: center;'>Diff-TTS (T=400, &#947;=1)
+                            </p>
+                        </div>
+                        <div style='height: 60px; '>
+                            <audio controls controlsList="nodownload"
+                                style='display: inline-block; padding:8px; width: 270px; height: 50px '>
+                                <source src="./assets/5/f.wav" class="img-fluid rounded mx-auto d-block" alt="temp">
+                            </audio>
+                        </div>
+                    </div>
+                    <div class='row' style='width: 600px; height:50px; '>
+                        <div style='height: 60px;'>
+                            <p style='height: 60px; width: 150px; padding: 15px 0; text-align: center;'>Diff-TTS (T=400, &#947;=7)</p>
+                        </div>
+                        <div style='height: 60px; '>
+                            <audio controls controlsList="nodownload"
+                                style='display: inline-block; padding:8px; width: 270px; height: 50px '>
+                                <source src="./assets/6/f.wav" class="img-fluid rounded mx-auto d-block" alt="temp">
+                            </audio>
+                        </div>
+                    </div>
+                    <div class='row' style='width: 600px; height:50px; '>
+                        <div style='height: 60px;'>
+                            <p style='height: 60px; width: 150px; padding: 15px 0; text-align: center;'>Diff-TTS (T=400, &#947;=21)</p>
+                        </div>
+                        <div style='height: 60px; '>
+                            <audio controls controlsList="nodownload"
+                                style='display: inline-block; padding:8px; width: 270px; height: 50px '>
+                                <source src="./assets/7/f(x).wav" class="img-fluid rounded mx-auto d-block" alt="temp">
+                            </audio>
+                        </div>
+                    </div>
+                    <div class='row' style='width: 600px; height:50px; '>
+                        <div style='height: 60px;'>
+                            <p style='height: 60px; width: 150px; padding: 15px 0; text-align: center;'>Diff-TTS (T=400, &#947;=57)</p>
+                        </div>
+                        <div style='height: 60px; '>
+                            <audio controls controlsList="nodownload"
+                                style='display: inline-block; padding:8px; width: 270px; height: 50px '>
+                                <source src="./assets/8/f.wav" class="img-fluid rounded mx-auto d-block" alt="temp">
+                            </audio>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class='row' style='margin-top: 40px; margin-bottom: 10px;'>
+                <p class='h4'>Example 7</p>
+            </div>
+
+            <div style='display: flex; align-content: center; '>
+                <div style='flex: 1;  '>
+                    <div class='row' style='width: 600px; height:50px; '>
+                        <p style='height: 60px; width: 150px; padding: 15px 0; text-align: center;'>Ground Truth</p>
+                        <div style='height: 60px; vertical-align: middle'>
+                            <audio controls controlsList="nodownload"
+                                style='display: inline-block; padding:8px; width: 270px; height: 50px'>
+                                <source src="./assets/1/b.wav" class="img-fluid rounded mx-auto d-block" alt="temp">
+                            </audio>
+                        </div>
+                    </div>
+                    <div class='row' style='width: 600px; height:50px; '>
+                        <div style='height: 60px;'>
+                            <p style='height: 60px; width: 150px; padding: 15px 0; text-align: center;'>Ground Truth(Mel + HiFiGAN)</p>
+                        </div>
+                        <div style='height: 60px; '>
+                            <audio controls controlsList="nodownload"
+                                style='display: inline-block; padding:8px; width: 270px; height: 50px '>
+                                <source src="./assets/2/b.wav" class="img-fluid rounded mx-auto d-block" alt="temp">
+                            </audio>
+                        </div>
+                    </div>
+                    <div class='row' style='width: 600px; height:50px; '>
+                        <div style='height: 60px;'>
+                            <p style='height: 60px; width: 150px; padding: 15px 0; text-align: center;'>Tacotron2</p>
+                        </div>
+                        <div style='height: 60px; '>
+                            <audio controls controlsList="nodownload"
+                                style='display: inline-block; padding:8px; width: 270px; height: 50px '>
+                                <source src="./assets/3/b.wav" class="img-fluid rounded mx-auto d-block" alt="temp">
+                            </audio>
+                        </div>
+                    </div>
+                    <div class='row' style='width: 600px; height:50px; '>
+                        <div style='height: 60px;'>
+                            <p style='height: 60px; width: 150px; padding: 15px 0; text-align: center;'>Glow-TTS</p>
+                        </div>
+                        <div style='height: 60px; '>
+                            <audio controls controlsList="nodownload"
+                                style='display: inline-block; padding:8px; width: 270px; height: 50px '>
+                                <source src="./assets/4/b.wav" class="img-fluid rounded mx-auto d-block" alt="temp">
+                            </audio>
+                        </div>
+                    </div>
+
+                </div>
+
+
+                <div style='flex: 1;'>
+                    <div class='row' style='width: 600px; height:50px; '>
+                        <div style='height: 60px;'>
+                            <p style='height: 60px; width: 150px; padding: 15px 0; text-align: center;'>Diff-TTS (T=400, &#947;=1)
+                            </p>
+                        </div>
+                        <div style='height: 60px; '>
+                            <audio controls controlsList="nodownload"
+                                style='display: inline-block; padding:8px; width: 270px; height: 50px '>
+                                <source src="./assets/5/b.wav" class="img-fluid rounded mx-auto d-block" alt="temp">
+                            </audio>
+                        </div>
+                    </div>
+                    <div class='row' style='width: 600px; height:50px; '>
+                        <div style='height: 60px;'>
+                            <p style='height: 60px; width: 150px; padding: 15px 0; text-align: center;'>Diff-TTS (T=400, &#947;=7)</p>
+                        </div>
+                        <div style='height: 60px; '>
+                            <audio controls controlsList="nodownload"
+                                style='display: inline-block; padding:8px; width: 270px; height: 50px '>
+                                <source src="./assets/6/b.wav" class="img-fluid rounded mx-auto d-block" alt="temp">
+                            </audio>
+                        </div>
+                    </div>
+                    <div class='row' style='width: 600px; height:50px; '>
+                        <div style='height: 60px;'>
+                            <p style='height: 60px; width: 150px; padding: 15px 0; text-align: center;'>Diff-TTS (T=400, &#947;=21)</p>
+                        </div>
+                        <div style='height: 60px; '>
+                            <audio controls controlsList="nodownload"
+                                style='display: inline-block; padding:8px; width: 270px; height: 50px '>
+                                <source src="./assets/7/b.wav" class="img-fluid rounded mx-auto d-block" alt="temp">
+                            </audio>
+                        </div>
+                    </div>
+                    <div class='row' style='width: 600px; height:50px; '>
+                        <div style='height: 60px;'>
+                            <p style='height: 60px; width: 150px; padding: 15px 0; text-align: center;'>Diff-TTS (T=400, &#947;=57)</p>
+                        </div>
+                        <div style='height: 60px; '>
+                            <audio controls controlsList="nodownload"
+                                style='display: inline-block; padding:8px; width: 270px; height: 50px '>
+                                <source src="./assets/8/b.wav" class="img-fluid rounded mx-auto d-block" alt="temp">
+                            </audio>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+
+            <div style='margin-top:40px'>
+                <hr>
+                <div class='row text-center'>
+                    <div class='col'>
+                        <p class='h2 font-weight-bold '>Ablation Studies</p>
+                    </div>
+                </div>
+
+
+                <div class='row' style='margin-top: 40px'>
+                    <p class='h3 font-weight-normal'>1. Diversity </p><br>
+                </div>
+
+
+                <div class='row' style='margin-top: 40px; margin-bottom: 10px'>
+                    <p class='h4'>Example 1</p><br>
+                </div>
+
+
+                <div style='display: flex'>
+
+                    <div style='flex: 1'>
+                        <div class='row' style='width: 600px; height:50px; '>
+                            <div style='height: 60px;'>
+                                <p style='height: 60px; width: 150px; padding: 15px 0; text-align: center;'>temperature T = 0.1
+
+                                </p>
+                            </div>
+                            <div style='height: 60px; '>
+                                <audio controls controlsList="nodownload"
+                                    style='display: inline-block; padding:8px; width: 270px; height: 50px '>
+                                    <source src="./assets/9/d.wav" class="img-fluid rounded mx-auto d-block" alt="temp">
+                                </audio>
+                            </div>
+                        </div>
+
+                        <div class='row' style='width: 600px; height:50px; '>
+                            <div style='height: 60px;'>
+                                <p style='height: 60px; width: 150px; padding: 15px 0; text-align: center;'>temperature T = 0.333
+                                </p>
+                            </div>
+                            <div style='height: 60px; '>
+                                <audio controls controlsList="nodownload"
+                                    style='display: inline-block; padding:8px; width: 270px; height: 50px '>
+                                    <source src="./assets/10/d.wav" class="img-fluid rounded mx-auto d-block"
+                                        alt="temp">
+                                </audio>
+                            </div>
+                        </div>
+                        <div class='row' style='width: 600px; height:50px; '>
+                            <div style='height: 60px;'>
+                                <p style='height: 60px; width: 150px; padding: 15px 0; text-align: center;'>temperature T = 0.667
+                                </p>
+                            </div>
+                            <div style='height: 60px; '>
+                                <audio controls controlsList="nodownload"
+                                    style='display: inline-block; padding:8px; width: 270px; height: 50px '>
+                                    <source src="./assets/11/d.wav" class="img-fluid rounded mx-auto d-block"
+                                        alt="temp">
+                                </audio>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class='row' style='margin-top: 40px; margin-bottom: 10px'>
+                    <p class='h4'>Example 2</p><br>
+                </div>
+
+
+                <div style='display: flex'>
+
+                    <div style='flex: 1'>
+                        <div class='row' style='width: 600px; height:50px; '>
+                            <div style='height: 60px;'>
+                                <p style='height: 60px; width: 150px; padding: 15px 0; text-align: center;'>temperature T = 0.1
+                                </p>
+                            </div>
+                            <div style='height: 60px; '>
+                                <audio controls controlsList="nodownload"
+                                    style='display: inline-block; padding:8px; width: 270px; height: 50px '>
+                                    <source src="./assets/9/b.wav" class="img-fluid rounded mx-auto d-block" alt="temp">
+                                </audio>
+                            </div>
+                        </div>
+
+                        <div class='row' style='width: 600px; height:50px; '>
+                            <div style='height: 60px;'>
+                                <p style='height: 60px; width: 150px; padding: 15px 0; text-align: center;'>temperature T = 0.333
+                                </p>
+                            </div>
+                            <div style='height: 60px; '>
+                                <audio controls controlsList="nodownload"
+                                    style='display: inline-block; padding:8px; width: 270px; height: 50px '>
+                                    <source src="./assets/10/b.wav" class="img-fluid rounded mx-auto d-block"
+                                        alt="temp">
+                                </audio>
+                            </div>
+                        </div>
+                        <div class='row' style='width: 600px; height:50px; '>
+                            <div style='height: 60px;'>
+                                <p style='height: 60px; width: 150px; padding: 15px 0; text-align: center;'>temperature T = 0.667
+                                </p>
+                            </div>
+                            <div style='height: 60px; '>
+                                <audio controls controlsList="nodownload"
+                                    style='display: inline-block; padding:8px; width: 270px; height: 50px '>
+                                    <source src="./assets/11/b.wav" class="img-fluid rounded mx-auto d-block"
+                                        alt="temp">
+                                </audio>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class='row' style='margin-top: 40px; margin-bottom: 10px'>
+                    <p class='h4'>Example 3</p><br>
+                </div>
+
+
+                <div style='display: flex'>
+
+                    <div style='flex: 1'>
+                        <div class='row' style='width: 600px; height:50px; '>
+                            <div style='height: 60px;'>
+                                <p style='height: 60px; width: 150px; padding: 15px 0; text-align: center;'>temperature T = 0.1
+                                </p>
+                            </div>
+                            <div style='height: 60px; '>
+                                <audio controls controlsList="nodownload"
+                                    style='display: inline-block; padding:8px; width: 270px; height: 50px '>
+                                    <source src="./assets/9/c.wav" class="img-fluid rounded mx-auto d-block" alt="temp">
+                                </audio>
+                            </div>
+                        </div>
+
+                        <div class='row' style='width: 600px; height:50px; '>
+                            <div style='height: 60px;'>
+                                <p style='height: 60px; width: 150px; padding: 15px 0; text-align: center;'>temperature T = 0.333
+                                </p>
+                            </div>
+                            <div style='height: 60px; '>
+                                <audio controls controlsList="nodownload"
+                                    style='display: inline-block; padding:8px; width: 270px; height: 50px '>
+                                    <source src="./assets/10/c.wav" class="img-fluid rounded mx-auto d-block"
+                                        alt="temp">
+                                </audio>
+                            </div>
+                        </div>
+                        <div class='row' style='width: 600px; height:50px; '>
+                            <div style='height: 60px;'>
+                                <p style='height: 60px; width: 150px; padding: 15px 0; text-align: center;'>temperature T = 0.667
+                                </p>
+                            </div>
+                            <div style='height: 60px; '>
+                                <audio controls controlsList="nodownload"
+                                    style='display: inline-block; padding:8px; width: 270px; height: 50px '>
+                                    <source src="./assets/11/c.wav" class="img-fluid rounded mx-auto d-block"
+                                        alt="temp">
+                                </audio>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class='row' style='margin-top: 40px; margin-bottom: 10px'>
+                    <p class='h4'>Example 4</p><br>
+                </div>
+
+
+                <div style='display: flex'>
+
+                    <div style='flex: 1'>
+                        <div class='row' style='width: 600px; height:50px; '>
+                            <div style='height: 60px;'>
+                                <p style='height: 60px; width: 150px; padding: 15px 0; text-align: center;'>temperature T = 0.1
+                                </p>
+                            </div>
+                            <div style='height: 60px; '>
+                                <audio controls controlsList="nodownload"
+                                    style='display: inline-block; padding:8px; width: 270px; height: 50px '>
+                                    <source src="./assets/9/a.wav" class="img-fluid rounded mx-auto d-block" alt="temp">
+                                </audio>
+                            </div>
+                        </div>
+
+                        <div class='row' style='width: 600px; height:50px; '>
+                            <div style='height: 60px;'>
+                                <p style='height: 60px; width: 150px; padding: 15px 0; text-align: center;'>temperature T = 0.333
+                                </p>
+                            </div>
+                            <div style='height: 60px; '>
+                                <audio controls controlsList="nodownload"
+                                    style='display: inline-block; padding:8px; width: 270px; height: 50px '>
+                                    <source src="./assets/10/a.wav" class="img-fluid rounded mx-auto d-block"
+                                        alt="temp">
+                                </audio>
+                            </div>
+                        </div>
+                        <div class='row' style='width: 600px; height:50px; '>
+                            <div style='height: 60px;'>
+                                <p style='height: 60px; width: 150px; padding: 15px 0; text-align: center;'>temperature T = 0.667
+                                </p>
+                            </div>
+                            <div style='height: 60px; '>
+                                <audio controls controlsList="nodownload"
+                                    style='display: inline-block; padding:8px; width: 270px; height: 50px '>
+                                    <source src="./assets/11/a.wav" class="img-fluid rounded mx-auto d-block"
+                                        alt="temp">
+                                </audio>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+
+                <div class='row' style='margin-top: 80px'>
+                    <p class='h3 font-weight-normal'>2. Length control </p><br>
+                </div>
+
+                <div style='display: flex'>
+                    <div style='flex: 1'>
+
+                        <div class='row' style='margin-top: 40px; margin-bottom: 10px'>
+                            <p class='h4'>Example 1</p><br>
+                        </div>
+
+
+                        <div style='display: flex'>
+
+                            <div style='flex: 1'>
+                                <div class='row' style='width: 600px; height:50px; '>
+                                    <div style='height: 60px;'>
+                                        <p style='height: 60px; width: 150px; padding: 15px 0; text-align: center;'>
+                                            0.75x
+                                        </p>
+                                    </div>
+                                    <div style='height: 60px; '>
+                                        <audio controls controlsList="nodownload"
+                                            style='display: inline-block; padding:8px; width: 270px; height: 50px '>
+                                            <source src="./assets/12/a.wav" class="img-fluid rounded mx-auto d-block"
+                                                alt="temp">
+                                        </audio>
+                                    </div>
+                                </div>
+
+                                <div class='row' style='width: 600px; height:50px; '>
+                                    <div style='height: 60px;'>
+                                        <p style='height: 60px; width: 150px; padding: 15px 0; text-align: center;'>1.00x
+                                        </p>
+                                    </div>
+                                    <div style='height: 60px; '>
+                                        <audio controls controlsList="nodownload"
+                                            style='display: inline-block; padding:8px; width: 270px; height: 50px '>
+                                            <source src="./assets/13/a.wav" class="img-fluid rounded mx-auto d-block"
+                                                alt="temp">
+                                        </audio>
+                                    </div>
+                                </div>
+                                <div class='row' style='width: 600px; height:50px; '>
+                                    <div style='height: 60px;'>
+                                        <p style='height: 60px; width: 150px; padding: 15px 0; text-align: center;'>1.25x
+                                        </p>
+                                    </div>
+                                    <div style='height: 60px; '>
+                                        <audio controls controlsList="nodownload"
+                                            style='display: inline-block; padding:8px; width: 270px; height: 50px '>
+                                            <source src="./assets/14/a.wav" class="img-fluid rounded mx-auto d-block"
+                                                alt="temp">
+                                        </audio>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="flex: 1">
+
+                        <div class='row' style='margin-top: 40px; margin-bottom: 10px'>
+                            <p class='h4'>Example 2</p><br>
+                        </div>
+
+
+                        <div style='display: flex'>
+
+                            <div style='flex: 1'>
+                                <div class='row' style='width: 600px; height:50px; '>
+                                    <div style='height: 60px;'>
+                                        <p style='height: 60px; width: 150px; padding: 15px 0; text-align: center;'>
+                                            0.75x
+                                        </p>
+                                    </div>
+                                    <div style='height: 60px; '>
+                                        <audio controls controlsList="nodownload"
+                                            style='display: inline-block; padding:8px; width: 270px; height: 50px '>
+                                            <source src="./assets/12/b.wav" class="img-fluid rounded mx-auto d-block"
+                                                alt="temp">
+                                        </audio>
+                                    </div>
+                                </div>
+
+                                <div class='row' style='width: 600px; height:50px; '>
+                                    <div style='height: 60px;'>
+                                        <p style='height: 60px; width: 150px; padding: 15px 0; text-align: center;'>1.00x
+                                        </p>
+                                    </div>
+                                    <div style='height: 60px; '>
+                                        <audio controls controlsList="nodownload"
+                                            style='display: inline-block; padding:8px; width: 270px; height: 50px '>
+                                            <source src="./assets/13/b.wav" class="img-fluid rounded mx-auto d-block"
+                                                alt="temp">
+                                        </audio>
+                                    </div>
+                                </div>
+                                <div class='row' style='width: 600px; height:50px; '>
+                                    <div style='height: 60px;'>
+                                        <p style='height: 60px; width: 150px; padding: 15px 0; text-align: center;'>1.25x
+                                        </p>
+                                    </div>
+                                    <div style='height: 60px; '>
+                                        <audio controls controlsList="nodownload"
+                                            style='display: inline-block; padding:8px; width: 270px; height: 50px '>
+                                            <source src="./assets/14/b.wav" class="img-fluid rounded mx-auto d-block"
+                                                alt="temp">
+                                        </audio>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div style='display: flex'>
+                    <div style='flex: 1'>
+
+                        <div class='row' style='margin-top: 40px; margin-bottom: 10px'>
+                            <p class='h4'>Example 3</p><br>
+                        </div>
+
+
+                        <div style='display: flex'>
+
+                            <div style='flex: 1'>
+                                <div class='row' style='width: 600px; height:50px; '>
+                                    <div style='height: 60px;'>
+                                        <p style='height: 60px; width: 150px; padding: 15px 0; text-align: center;'>
+                                            0.75x
+                                        </p>
+                                    </div>
+                                    <div style='height: 60px; '>
+                                        <audio controls controlsList="nodownload"
+                                            style='display: inline-block; padding:8px; width: 270px; height: 50px '>
+                                            <source src="./assets/12/c.wav" class="img-fluid rounded mx-auto d-block"
+                                                alt="temp">
+                                        </audio>
+                                    </div>
+                                </div>
+
+                                <div class='row' style='width: 600px; height:50px; '>
+                                    <div style='height: 60px;'>
+                                        <p style='height: 60px; width: 150px; padding: 15px 0; text-align: center;'>1.00x
+                                        </p>
+                                    </div>
+                                    <div style='height: 60px; '>
+                                        <audio controls controlsList="nodownload"
+                                            style='display: inline-block; padding:8px; width: 270px; height: 50px '>
+                                            <source src="./assets/13/c.wav" class="img-fluid rounded mx-auto d-block"
+                                                alt="temp">
+                                        </audio>
+                                    </div>
+                                </div>
+                                <div class='row' style='width: 600px; height:50px; '>
+                                    <div style='height: 60px;'>
+                                        <p style='height: 60px; width: 150px; padding: 15px 0; text-align: center;'>1.25x
+                                        </p>
+                                    </div>
+                                    <div style='height: 60px; '>
+                                        <audio controls controlsList="nodownload"
+                                            style='display: inline-block; padding:8px; width: 270px; height: 50px '>
+                                            <source src="./assets/14/c.wav" class="img-fluid rounded mx-auto d-block"
+                                                alt="temp">
+                                        </audio>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+                <!-- Optional JavaScript -->
+                <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+                <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+                    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+                    crossorigin="anonymous"></script>
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+                    integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+                    crossorigin="anonymous"></script>
+                <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+                    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+                    crossorigin="anonymous"></script>
+</body>
+
+</html>
