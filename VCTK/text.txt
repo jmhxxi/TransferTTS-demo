@@ -1,0 +1,4 @@
+p311/p311_198.wav|p311/p311_002.wav|p311|Ask her to bring these things with her from the store.
+p267/p267_085.wav|p267/p267_038.wav|p267|This represents a tough game for us.
+p237/p237_147.wav|p237/p237_034.wav|p237|I think a move would create a lot of interest.
+p333/p333_391.wav|p333/p333_422.wav|p333|It can't just be a cynical marketing exercise.
